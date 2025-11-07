@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from typing import Any
 
+import json
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.discord",
     "core",
+    "discord_bot",
     "artifacts",
 ]
 
@@ -163,11 +165,28 @@ SITE_ID = 1
 # Discord OAuth2 Configuration
 SOCIALACCOUNT_PROVIDERS = {
     "discord": {
+        "APP": {
+            "client_id": env("DISCORD_CLIENT_ID", default=""),
+            "secret": env("DISCORD_CLIENT_SECRET", default=""),
+            "key": "",  # optional - Discord doesn't use this
+        },
         "SCOPE": ["identify", "email", "guilds.members.read"],
         "AUTH_PARAMS": {},
         "OAUTH_PKCE_ENABLED": True,
     }
 }
+
+DISCORD_GUILD_ID = env("DISCORD_GUILD_ID", default="")
+
+
+DISCORD_ROLE_TO_GROUP_MAPPING = {}  # Default to an empty dict
+try:
+    role_mapping_json = env('DISCORD_ROLE_TO_GROUP_MAPPING')
+    DISCORD_ROLE_TO_GROUP_MAPPING = json.loads(role_mapping_json) # Parse the JSON string
+except KeyError:
+    print("WARNING: 'DISCORD_ROLE_TO_GROUP_MAPPING' not found in environment variables.")
+except json.JSONDecodeError:
+    print("WARNING: 'DISCORD_ROLE_TO_GROUP_MAPPING' is not a valid JSON string.")
 
 # Allauth settings for Discord-only authentication
 ACCOUNT_LOGIN_METHODS = {"username"}
