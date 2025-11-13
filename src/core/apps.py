@@ -5,5 +5,5 @@ class CoreConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "core"
 
-    def ready(self): # Disabled for testing
-        from discord_bot import signals 
+    def ready(self):
+        from discord_bot import roles_sync 

@@ -168,7 +168,6 @@ SOCIALACCOUNT_PROVIDERS = {
         "APP": {
             "client_id": env("DISCORD_CLIENT_ID", default=""),
             "secret": env("DISCORD_CLIENT_SECRET", default=""),
-            "key": "",  # optional - Discord doesn't use this
         },
         "SCOPE": ["identify", "email", "guilds.members.read"],
         "AUTH_PARAMS": {},
@@ -176,7 +175,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-DISCORD_GUILD_ID = env("DISCORD_GUILD_ID", default="")
+DISCORD_GUILD_ID = env("DISCORD_GUILD_ID")
 
 
 DISCORD_ROLE_TO_GROUP_MAPPING = {}  # Default to an empty dict
